@@ -2,23 +2,23 @@ version: '3'
 
 services:
   node1:
-    image: funkypenguin/Zent
+    image: funkypenguin/turtlecoin
     container_name: turtletest-node1
     volumes:
-      - ../Zentd:/var/lib/Zentd/
+      - ../turtlecoind:/var/lib/turtlecoind/
     networks:
       testnet:
         ipv4_address: 172.16.76.11
-
+  
 #  node2:
-#    image: funkypenguin/Zent
+#    image: funkypenguin/turtlecoin
 #    container_name: turtletest-node2
 #    networks:
 #      testnet:
 #        ipv4_address: 172.16.76.12
-
+  
 #  node3:
-#    image: funkypenguin/Zent
+#    image: funkypenguin/turtlecoin
 #    container_name: turtletest-node3
 #    networks:
 #      testnet:
@@ -29,3 +29,4 @@ networks:
     ipam:
       config:
         - subnet: 172.16.76.0/24
+

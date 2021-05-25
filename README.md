@@ -1,22 +1,24 @@
-![Zent Cash](https://github.com/ZentCashFoundation/brand/blob/master/logo/wordmark/zentcash_wordmark_color.png "Zent Cash")
-#### Zent Cash is a private, fast, and easy way to send money to friends and businesses.
+![image](https://user-images.githubusercontent.com/34389545/35821974-62e0e25c-0a70-11e8-87dd-2cfffeb6ed47.png)
 
-[![Discord](https://img.shields.io/discord/527428494154792960?label=Discord%20-%20Zent%20Cash%20[ZTC])](https://discord.gg/tfaUE2G) 
-[![GitHub issues](https://img.shields.io/github/issues/ZentCashFoundation/Zent?label=Issues)](https://github.com/ZentCashFoundation/Zent/issues)
-[![GitHub contributors](https://img.shields.io/github/contributors-anon/ZentCashFoundation/Zent?label=Contributors)](https://github.com/ZentCashFoundation/Zent/graphs/contributors) 
-[![GitHub All Releases](https://img.shields.io/github/downloads/ZentCashFoundation/Zent/total?label=Downloads)](http://latest.zent.cash) 
-![Version](https://img.shields.io/github/v/release/ZentCashFoundation/Zent)
+#### Master Build Status
+[![Build Status](https://travis-ci.org/turtlecoin/turtlecoin.svg?branch=master)](https://travis-ci.org/turtlecoin/turtlecoin) [![Build status](https://ci.appveyor.com/api/projects/status/github/turtlecoin/turtlecoin?branch=master&svg=true)](https://ci.appveyor.com/project/RocksteadyTC/turtlecoin)
 
-### Master Build Status
-![Build](https://github.com/ZentCashFoundation/Zent/workflows/Build/badge.svg)
+#### Development Build Status
+[![Build Status](https://travis-ci.org/turtlecoin/turtlecoin.svg?branch=development)](https://travis-ci.org/turtlecoin/turtlecoin) [![Build status](https://ci.appveyor.com/api/projects/status/github/turtlecoin/turtlecoin?branch=development&svg=true)](https://ci.appveyor.com/project/RocksteadyTC/turtlecoin)
 
 ### Installing
 
-We offer binary images of the latest releases here: http://latest.zent.cash
+We offer binary images of the latest releases here: http://latest.turtlecoin.lol
 
 If you would like to compile yourself, read on.
 
 ### How To Compile
+
+#### Build Optimization
+
+The CMake build system will, by default, create optimized *native* builds for your particular system type when you build the software. Using this method, the binaries created provide a better experience and all together faster performance.
+
+However, if you wish to create *portable* binaries that can be shared between systems, specify `-DARCH=default` in your CMake arguments during the build process. Note that *portable* binaries will have a noticable difference in performance than *native* binaries. For this reason, it is always best to build for your particular system if possible.
 
 #### Linux
 
@@ -39,8 +41,8 @@ If you are using Clang, you will need Clang 6.0 or higher. You will also need li
 - `sudo pip install cmake`
 - `export CC=gcc-8`
 - `export CXX=g++-8`
-- `git clone -b master --single-branch https://github.com/ZentCashFoundation/Zent`
-- `cd Zent`
+- `git clone -b master --single-branch https://github.com/turtlecoin/turtlecoin`
+- `cd turtlecoin`
 - `mkdir build`
 - `cd build`
 - `cmake ..`
@@ -49,7 +51,7 @@ If you are using Clang, you will need Clang 6.0 or higher. You will also need li
 The binaries will be in the `src` folder when you are complete.
 
 - `cd src`
-- `./Zentd --version`
+- `./TurtleCoind --version`
 
 ##### Ubuntu, using Clang
 
@@ -73,8 +75,8 @@ You need to modify the below command for your version of ubuntu - see https://ap
 - `sudo pip install cmake`
 - `export CC=clang-6.0`
 - `export CXX=clang++-6.0`
-- `git clone -b master --single-branch https://github.com/ZentCashFoundation/Zent`
-- `cd Zent`
+- `git clone -b master --single-branch https://github.com/turtlecoin/turtlecoin`
+- `cd turtlecoin`
 - `mkdir build`
 - `cd build`
 - `cmake ..`
@@ -83,7 +85,7 @@ You need to modify the below command for your version of ubuntu - see https://ap
 The binaries will be in the `src` folder when you are complete.
 
 - `cd src`
-- `./Zentd --version`
+- `./TurtleCoind --version`
 
 ##### Generic Linux
 
@@ -92,8 +94,8 @@ Ensure you have the dependencies listed above.
 If you want to use clang, ensure you set the environment variables `CC` and `CXX`.
 See the ubuntu instructions for an example.
 
-- `git clone -b master --single-branch https://github.com/ZentCashFoundation/Zent`
-- `cd Zent`
+- `git clone -b master --single-branch https://github.com/turtlecoin/turtlecoin`
+- `cd turtlecoin`
 - `mkdir build`
 - `cd build`
 - `cmake ..`
@@ -102,7 +104,7 @@ See the ubuntu instructions for an example.
 The binaries will be in the `src` folder when you are complete.
 
 - `cd src`
-- `./Zentd --version`
+- `./TurtleCoind --version`
 
 #### OSX/Apple, using Clang
 
@@ -113,11 +115,13 @@ The binaries will be in the `src` folder when you are complete.
 ##### Building
 
 - `which brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-- `brew install --force cmake boost llvm openssl`
-- `export CC=/usr/local/opt/llvm/bin/clang`
-- `export CXX=/usr/local/opt/llvm/bin/clang++`
-- `git clone -b master --single-branch https://github.com/ZentCashFoundation/Zent`
-- `cd Zent`
+- `brew install --force cmake boost llvm@8 openssl`
+- `brew link --force llvm@8`
+- `ln -s /usr/local/opt/llvm@8 /usr/local/opt/llvm`
+- `export CC=/usr/local/opt/llvm@8/bin/clang`
+- `export CXX=/usr/local/opt/llvm@8/bin/clang++`
+- `git clone -b master --single-branch https://github.com/turtlecoin/turtlecoin`
+- `cd turtlecoin`
 - `mkdir build`
 - `cd build`
 - `cmake ..`
@@ -126,8 +130,7 @@ The binaries will be in the `src` folder when you are complete.
 The binaries will be in the `src` folder when you are complete.
 
 - `cd src`
-- `./Zentd --version`
-
+- `./TurtleCoind --version`
 
 #### Windows
 
@@ -140,46 +143,45 @@ You can build for 32-bit or 64-bit Windows. **If you're not sure, pick 64-bit.**
 - Install Boost (1.69 works the latest is 1.70 and doesn't work). Select the appropriate version for your system:
   - [Boost 64-bit](https://bintray.com/boostorg/release/download_file?file_path=1.69.0%2Fbinaries%2Fboost_1_69_0-msvc-14.1-64.exe)
   - [Boost 32-bit](https://bintray.com/boostorg/release/download_file?file_path=1.69.0%2Fbinaries%2Fboost_1_69_0-msvc-14.1-32.exe)
-- Install the latest full version of OpenSSL (currently OpenSSL 1.1.1c). Select the appropriate version for your system:
-  - [OpenSSL 64-bit](https://slproweb.com/download/Win64OpenSSL-1_1_1c.exe)
-  - [OpenSSL 32-bit](https://slproweb.com/download/Win32OpenSSL-1_1_1c.exe)
+- Install the latest full LTS version of OpenSSL (currently OpenSSL 1.1.0L). Select the appropriate version for your system:
+  - [OpenSSL 64-bit](https://slproweb.com/download/Win64OpenSSL-1_1_0L.exe)
+  - [OpenSSL 32-bit](https://slproweb.com/download/Win32OpenSSL-1_1_0L.exe)
 
 ##### Building
 
 For 64-bit:
-- From the start menu, open **x64 Native Tools Command Prompt for VS 2019**.
-- `cd <your_zentcash_directory>`
+- From the start menu, open 'x64 Native Tools Command Prompt for VS 2019'.
+- `cd <your_turtlecoin_directory>`
 - `mkdir build`
 - `cd build`
 - `cmake -G "Visual Studio 16 2019" -A x64 .. -DBOOST_ROOT=C:/local/boost_1_69_0`
-- `MSBuild ZentCash.sln /p:Configuration=Release /m`
+- `MSBuild TurtleCoin.sln /p:Configuration=Release /m` or `MSBuild src\cli.vcxproj /p:Configuration=Release /m`
 
 For 32-bit:
-- From the start menu, open **x86 Native Tools Command Prompt for VS 2019**.
-- `cd <your_zentcash_directory>`
+- From the start menu, open 'x86 Native Tools Command Prompt for VS 2019'.
+- `cd <your_turtlecoin_directory>`
 - `mkdir build`
 - `cd build`
 - `cmake -G "Visual Studio 16 2019" -A Win32 .. -DBOOST_ROOT=C:/local/boost_1_69_0`
-- `MSBuild ZentCash.sln /p:Configuration=Release /p:Platform=Win32 /m`
+- `MSBuild TurtleCoin.sln /p:Configuration=Release /p:Platform=Win32 /m` 
 
 The binaries will be in the `src/Release` folder when you are complete.
 
 - `cd src`
 - `cd Release`
-- `Zentd.exe --version`
+- `TurtleCoind.exe --version`
 
 #### Thanks
-Cryptonote Developers, Bytecoin Developers, Monero Developers, Forknote Project, TurtleCoin Community, Zent Cash Community.
+Cryptonote Developers, Bytecoin Developers, Monero Developers, Forknote Project, TurtleCoin Community
 
 ### Copypasta for license when editing files
 
-Hi Zent Cash contributor, thanks for forking and sending back Pull Requests. Extensive docs about contributing are in the works or elsewhere. For now this is the bit we need to get into all the files we touch. Please add it to the top of the files, see [src/CryptoNoteConfig.h](https://github.com/ZentCashFoundation/Zent/commit/28cfef2575f2d767f6e512f2a4017adbf44e610e) for an example.
+Hi TurtleCoin contributor, thanks for forking and sending back Pull Requests. Extensive docs about contributing are in the works or elsewhere. For now this is the bit we need to get into all the files we touch. Please add it to the top of the files, see [src/CryptoNoteConfig.h](https://github.com/turtlecoin/turtlecoin/commit/28cfef2575f2d767f6e512f2a4017adbf44e610e) for an example.
 
 ```
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero Project
 // Copyright (c) 2018-2019, The TurtleCoin Developers
-// Copyright (c) 2019-2020, The Zent Cash Developers
 //
 // Please see the included LICENSE file for more information.
 ```

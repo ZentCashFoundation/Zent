@@ -20,14 +20,16 @@
 #include <cstddef>
 #include <initializer_list>
 
-namespace CryptoNote {
-struct CheckpointData {
-  uint32_t index;
-  const char* blockId;
-};
+namespace CryptoNote
+{
+    struct CheckpointData
+    {
+        uint32_t index;
+        const char *blockId;
+    };
 
-const std::initializer_list<CheckpointData> CHECKPOINTS = {  
-{0, "7c02559783a46e9401a1539cc90571f29b3f1cf231f5fea6b8fbbe09a16a4f29"}, 
+    const std::initializer_list<CheckpointData> CHECKPOINTS = {
+        {0, "7c02559783a46e9401a1539cc90571f29b3f1cf231f5fea6b8fbbe09a16a4f29"}, 
 {2, "b551967e99b7916e566ea92ca249281b0dc6304aa0be3844625698f46282a323"}, 
 {1000, "952e1f2c7df6c64c0cfa9249edd893932ff8388db262ded9c93326bb2908bd5c"},
 {2000, "f8f00eee767b929d65dab6901ec14bd820fabf119dc54fba2376c85c1045b395"},
@@ -842,4 +844,4 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
 {831000, "56d8b6c276b97c6ed62829adc124f11537578b94b1bcef8235d66c3f6bd7cd86"},
 {832000, "5f0aea90b066045a79f32a3684eafbab9b670b168b5fae02a0eea354f10d10b0"}  
 };
-}
+} // namespace CryptoNote
