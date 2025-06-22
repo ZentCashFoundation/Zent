@@ -349,7 +349,7 @@ namespace CryptoNote
 
     // This defines the number of versions ahead we must see peers before we start displaying
     // warning messages that we need to upgrade our software.
-    const uint8_t P2P_UPGRADE_WINDOW = 2;
+    const uint8_t P2P_UPGRADE_WINDOW = 13;
 
     const size_t P2P_CONNECTION_MAX_WRITE_BUFFER_SIZE = 32 * 1024 * 1024; // 32 MB
     const uint32_t P2P_DEFAULT_CONNECTIONS_COUNT = 8;
@@ -384,7 +384,7 @@ namespace CryptoNote
         {0xc6, 0x1c, 0x4d, 0x6c, 0xcc, 0x12, 0x42, 0x9c, 0x33, 0xd6, 0x35, 0xa5, 0xee, 0xc1, 0x43, 0xd8}};
 
     const char *const SEED_NODES[] = {
-        "138.124.183.11:21688", /// USA
+        "138.124.183.11:21688", // USA
  	"185.74.222.212:21688", // Hong Kong
         "seedpro1.zent.cash:21688", // seedpro1.zent.cash
         "seedpro2.zent.cash:21688", // seedpro2.zent.cash

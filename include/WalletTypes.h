@@ -311,6 +311,12 @@ namespace WalletTypes
         {
         }
 
+        Transaction(const Transaction &) = default;
+        Transaction(Transaction &&) = default;
+        Transaction &operator=(const Transaction &) = default;
+        Transaction &operator=(Transaction &&) = default;
+
+
         /////////////////////////////
         /* Public member functions */
         /////////////////////////////
