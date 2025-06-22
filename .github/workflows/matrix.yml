@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         # Add more compilers here if you need them
-        build_name: ['Ubuntu 22.04 - GCC 9', 'Ubuntu 22.04 - Clang 12']
+        build_name: ['Ubuntu 22.04 - GCC 9', 'Ubuntu 22.04 - Clang 12', 'Ubuntu 22.04 - aarch64']
         include:
           - build_name: 'Ubuntu 22.04 - GCC 9'
             package_name: 'gcc-9 g++-9'
@@ -31,6 +31,9 @@ jobs:
             cxx: clang++-12
             label: ubuntu-22.04-linux-clang-11
             deployable: false
+          - build_name: 'Ubuntu 22.04 - aarch64'
+            label: aarch64
+            deployable: true
     env:
       CCACHE_DIR: $GITHUB_WORKSPACE/.ccache
       LABEL: ${{ matrix.label }}
@@ -39,6 +42,7 @@ jobs:
 
       # Fetch Dependencies
       - name: Dependencies
+        if: matrix.build_name != 'Ubuntu 22.04 - aarch64'
         run: |
           sudo apt update
           sudo apt upgrade
@@ -63,12 +67,24 @@ jobs:
           cmake -DARCH=default -DCMAKE_BUILD_TYPE=Release -DSTATIC=true ..
       # Build for linux
       - name: Build
+        if: matrix.build_name != 'Ubuntu 22.04 - aarch64'
         run: |
           cd build
           make 
-
+      # Build for aarch64
+      - name: Prepare and Build (Ubuntu 22.04 - aarch64)
+        if: matrix.build_name == 'Ubuntu 22.04 - aarch64'
+        run: |
+          source scripts/prep-aarch64.sh
+          mkdir build && cd build
+          cmake -DARCH=default -DCMAKE_BUILD_TYPE=Release -DSTATIC=true ..
+          make -j2
+          cd src
+          TARGETS="Zentd miner zentwallet cryptotest Zent-service wallet-api wallet-upgrader"
+          ${STRIP} ${TARGETS}
       # Test the crypto
       - name: Test Crypto
+        if: matrix.build_name != 'Ubuntu 22.04 - aarch64'
         run: |
           cd build/src
           ./cryptotest      
