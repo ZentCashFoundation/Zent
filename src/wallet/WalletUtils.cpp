@@ -1,5 +1,6 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2018-2019, The TurtleCoin Developers
+// Copyright (c) 2025, The Zent Cash Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -13,6 +14,10 @@ namespace CryptoNote
 {
     uint64_t getDefaultMixinByHeight(const uint64_t height)
     {
+        if (height >= CryptoNote::parameters::MIXIN_LIMITS_V4_HEIGHT)
+        {
+            return CryptoNote::parameters::DEFAULT_MIXIN_V4;
+        }
         if (height >= CryptoNote::parameters::MIXIN_LIMITS_V3_HEIGHT)
         {
             return CryptoNote::parameters::DEFAULT_MIXIN_V3;

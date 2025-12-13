@@ -110,12 +110,20 @@ namespace CryptoNote
 
         const uint64_t MAXIMUM_MIXIN_V3 = 3;
 
+        const uint64_t MINIMUM_MIXIN_V4 = 0;
+        
+        const uint64_t MEDIUM_MIXIN_V4 = 3;
+        
+        const uint64_t MAXIMUM_MIXIN_V4 = 7;
+
         /* The heights to activate the mixin limits at */
         const uint32_t MIXIN_LIMITS_V1_HEIGHT = 0;
 
         const uint32_t MIXIN_LIMITS_V2_HEIGHT = 11000;
 
         const uint32_t MIXIN_LIMITS_V3_HEIGHT = 150000;
+
+        const uint32_t MIXIN_LIMITS_V4_HEIGHT = 4294967290;
 
         /* The mixin to use by default with zedwallet and turtle-service */
         /* DEFAULT_MIXIN_V0 is the mixin used before MIXIN_LIMITS_V1_HEIGHT is started */
@@ -126,6 +134,8 @@ namespace CryptoNote
         const uint64_t DEFAULT_MIXIN_V2 = MAXIMUM_MIXIN_V2;
 
         const uint64_t DEFAULT_MIXIN_V3 = MAXIMUM_MIXIN_V3;
+
+        const uint64_t DEFAULT_MIXIN_V4 = MINIMUM_MIXIN_V4;
 
         const uint64_t DEFAULT_DUST_THRESHOLD = UINT64_C(10);
 
@@ -385,7 +395,7 @@ namespace CryptoNote
 
     const char *const SEED_NODES[] = {
         "138.124.183.11:21688", // USA
- 	"185.74.222.212:21688", // Hong Kong
+ 	    "185.74.222.212:21688", // Hong Kong
         "seedpro1.zent.cash:21688", // seedpro1.zent.cash
         "seedpro2.zent.cash:21688", // seedpro2.zent.cash
         "seedpro3.zent.cash:21688", // seedpro3.zent.cash
