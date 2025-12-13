@@ -223,9 +223,9 @@ jobs:
 
           
 
-  macos_build:
-    name: macOS
-    runs-on: macos-13
+  macos_intel_build:
+    name: macOS-intel
+    runs-on: macos-15-intel
     env:
       CC: /usr/local/opt/llvm@15/bin/clang
       CXX: /usr/local/opt/llvm@15/bin/clang++
