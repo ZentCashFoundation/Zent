@@ -355,11 +355,11 @@ namespace CryptoNote
     const uint8_t P2P_MINIMUM_VERSION = 13;
 
     // This defines the minimum P2P version required for lite blocks propogation
-    const uint8_t P2P_LITE_BLOCKS_PROPOGATION_VERSION = 13;
+    const uint8_t P2P_LITE_BLOCKS_PROPOGATION_VERSION = 4;
 
     // This defines the number of versions ahead we must see peers before we start displaying
     // warning messages that we need to upgrade our software.
-    const uint8_t P2P_UPGRADE_WINDOW = 13;
+    const uint8_t P2P_UPGRADE_WINDOW = 2;
 
     const size_t P2P_CONNECTION_MAX_WRITE_BUFFER_SIZE = 32 * 1024 * 1024; // 32 MB
     const uint32_t P2P_DEFAULT_CONNECTIONS_COUNT = 8;
@@ -376,10 +376,10 @@ namespace CryptoNote
     const size_t P2P_DEFAULT_HANDSHAKE_INVOKE_TIMEOUT = 5000; // 5 seconds
     const char P2P_STAT_TRUSTED_PUB_KEY[] = "";
 
-    const uint64_t ROCKSDB_WRITE_BUFFER_MB = 256; // 256 MB
-    const uint64_t ROCKSDB_READ_BUFFER_MB = 128; // 128 MB
-    const uint64_t ROCKSDB_MAX_OPEN_FILES = 125; // 125 files
-    const uint64_t ROCKSDB_BACKGROUND_THREADS = 4; // 4 DB threads
+    const uint64_t ROCKSDB_WRITE_BUFFER_MB = 1024; // 1 GB
+    const uint64_t ROCKSDB_READ_BUFFER_MB = 1024; // 1 GB
+    const uint64_t ROCKSDB_MAX_OPEN_FILES = 500; // 500 files
+    const uint64_t ROCKSDB_BACKGROUND_THREADS = 10; // 10 DB threads
 
     const uint64_t LEVELDB_WRITE_BUFFER_MB = 64; // 64 MB
     const uint64_t LEVELDB_READ_BUFFER_MB = 64; // 64 MB
