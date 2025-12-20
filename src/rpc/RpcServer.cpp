@@ -143,6 +143,11 @@ RpcServer::RpcServer(
             .Get("/height", router(&RpcServer::height, RpcMode::Default, bodyNotRequired, syncNotRequired))
             .Get("/peers", router(&RpcServer::peers, RpcMode::Default, bodyNotRequired, syncNotRequired))
 
+            .Get("/getinfo", router(&RpcServer::info, RpcMode::Default, bodyNotRequired, syncNotRequired))
+            .Get("/getfee", router(&RpcServer::fee, RpcMode::Default, bodyNotRequired, syncNotRequired))
+            .Get("/getheight", router(&RpcServer::height, RpcMode::Default, bodyNotRequired, syncNotRequired))
+            .Get("/getpeers", router(&RpcServer::peers, RpcMode::Default, bodyNotRequired, syncNotRequired))
+
             .Post("/json_rpc", jsonRpc)
             .Post("/sendrawtransaction", router(&RpcServer::sendTransaction, RpcMode::Default, bodyRequired, syncRequired))
             .Post("/getrandom_outs", router(&RpcServer::getRandomOuts, RpcMode::Default, bodyRequired, syncRequired))
