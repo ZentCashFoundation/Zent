@@ -10,6 +10,7 @@
 #include <config/WalletConfig.h>
 #include <iostream>
 #include <thread>
+#include <chrono>
 #include <utilities/ColouredMsg.h>
 #include <zedwallet++/CommandImplementations.h>
 
@@ -95,17 +96,19 @@ void syncWallet(const std::shared_ptr<WalletBackend> walletBackend)
 
         walletBlockCount = tmpWalletBlockCount;
 
-        /* Save every 1k blocks */
-        if (walletBlockCount > lastSavedBlock + 1000)
+        /* Save every 5k blocks */
+        if (walletBlockCount > lastSavedBlock + 5000)
         {
             std::cout << InformationMsg("\nSaving progress...\n\n");
 
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            
             walletBackend->save();
 
             lastSavedBlock = walletBlockCount;
         }
 
-        if (stuckCounter >= 20)
+        if (stuckCounter >= 100)
         {
             std::stringstream stream;
 
@@ -117,6 +120,6 @@ void syncWallet(const std::shared_ptr<WalletBackend> walletBackend)
             std::cout << WarningMsg(stream.str()) << std::endl;
         }
 
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        std::this_thread::sleep_for(std::chrono::seconds(5));
     }
 }

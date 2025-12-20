@@ -150,15 +150,15 @@ RpcServer::RpcServer(
 
             .Post("/json_rpc", jsonRpc)
             .Post("/sendrawtransaction", router(&RpcServer::sendTransaction, RpcMode::Default, bodyRequired, syncRequired))
-            .Post("/getrandom_outs", router(&RpcServer::getRandomOuts, RpcMode::Default, bodyRequired, syncNotRequired))
-            .Post("/getwalletsyncdata", router(&RpcServer::getWalletSyncData, RpcMode::Default, bodyRequired, syncNotRequired))
-            .Post("/get_global_indexes_for_range", router(&RpcServer::getGlobalIndexes, RpcMode::Default, bodyRequired, syncNotRequired))
-            .Post("/queryblockslite", router(&RpcServer::queryBlocksLite, RpcMode::Default, bodyRequired, syncNotRequired))
-            .Post("/get_transactions_status", router(&RpcServer::getTransactionsStatus, RpcMode::Default, bodyRequired, syncNotRequired))
-            .Post("/get_pool_changes_lite", router(&RpcServer::getPoolChanges, RpcMode::Default, bodyRequired, syncNotRequired))
-            .Post("/queryblocksdetailed", router(&RpcServer::queryBlocksDetailed, RpcMode::AllMethodsEnabled, bodyRequired, syncNotRequired))
-            .Post("/get_o_indexes", router(&RpcServer::getGlobalIndexesDeprecated, RpcMode::Default, bodyRequired, syncNotRequired))
-            .Post("/getrawblocks", router(&RpcServer::getRawBlocks, RpcMode::Default, bodyRequired, syncNotRequired))
+            .Post("/getrandom_outs", router(&RpcServer::getRandomOuts, RpcMode::Default, bodyRequired, syncRequired))
+            .Post("/getwalletsyncdata", router(&RpcServer::getWalletSyncData, RpcMode::Default, bodyRequired, syncRequired))
+            .Post("/get_global_indexes_for_range", router(&RpcServer::getGlobalIndexes, RpcMode::Default, bodyRequired, syncRequired))
+            .Post("/queryblockslite", router(&RpcServer::queryBlocksLite, RpcMode::Default, bodyRequired, syncRequired))
+            .Post("/get_transactions_status", router(&RpcServer::getTransactionsStatus, RpcMode::Default, bodyRequired, syncRequired))
+            .Post("/get_pool_changes_lite", router(&RpcServer::getPoolChanges, RpcMode::Default, bodyRequired, syncRequired))
+            .Post("/queryblocksdetailed", router(&RpcServer::queryBlocksDetailed, RpcMode::AllMethodsEnabled, bodyRequired, syncRequired))
+            .Post("/get_o_indexes", router(&RpcServer::getGlobalIndexesDeprecated, RpcMode::Default, bodyRequired, syncRequired))
+            .Post("/getrawblocks", router(&RpcServer::getRawBlocks, RpcMode::Default, bodyRequired, syncRequired))
 
             /* Matches everything */
             /* NOTE: Not passing through middleware */

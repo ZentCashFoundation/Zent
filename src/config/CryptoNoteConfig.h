@@ -110,12 +110,20 @@ namespace CryptoNote
 
         const uint64_t MAXIMUM_MIXIN_V3 = 3;
 
+        const uint64_t MINIMUM_MIXIN_V4 = 0;
+        
+        const uint64_t MEDIUM_MIXIN_V4 = 3;
+        
+        const uint64_t MAXIMUM_MIXIN_V4 = 7;
+
         /* The heights to activate the mixin limits at */
         const uint32_t MIXIN_LIMITS_V1_HEIGHT = 0;
 
         const uint32_t MIXIN_LIMITS_V2_HEIGHT = 11000;
 
         const uint32_t MIXIN_LIMITS_V3_HEIGHT = 150000;
+
+        const uint32_t MIXIN_LIMITS_V4_HEIGHT = 4294967290;
 
         /* The mixin to use by default with zedwallet and turtle-service */
         /* DEFAULT_MIXIN_V0 is the mixin used before MIXIN_LIMITS_V1_HEIGHT is started */
@@ -126,6 +134,8 @@ namespace CryptoNote
         const uint64_t DEFAULT_MIXIN_V2 = MAXIMUM_MIXIN_V2;
 
         const uint64_t DEFAULT_MIXIN_V3 = MAXIMUM_MIXIN_V3;
+
+        const uint64_t DEFAULT_MIXIN_V4 = MINIMUM_MIXIN_V4;
 
         const uint64_t DEFAULT_DUST_THRESHOLD = UINT64_C(10);
 
@@ -345,7 +355,7 @@ namespace CryptoNote
     const uint8_t P2P_MINIMUM_VERSION = 13;
 
     // This defines the minimum P2P version required for lite blocks propogation
-    const uint8_t P2P_LITE_BLOCKS_PROPOGATION_VERSION = 13;
+    const uint8_t P2P_LITE_BLOCKS_PROPOGATION_VERSION = 4;
 
     // This defines the number of versions ahead we must see peers before we start displaying
     // warning messages that we need to upgrade our software.
@@ -366,10 +376,10 @@ namespace CryptoNote
     const size_t P2P_DEFAULT_HANDSHAKE_INVOKE_TIMEOUT = 5000; // 5 seconds
     const char P2P_STAT_TRUSTED_PUB_KEY[] = "";
 
-    const uint64_t ROCKSDB_WRITE_BUFFER_MB = 256; // 256 MB
-    const uint64_t ROCKSDB_READ_BUFFER_MB = 128; // 128 MB
-    const uint64_t ROCKSDB_MAX_OPEN_FILES = 125; // 125 files
-    const uint64_t ROCKSDB_BACKGROUND_THREADS = 4; // 4 DB threads
+    const uint64_t ROCKSDB_WRITE_BUFFER_MB = 1024; // 1 GB
+    const uint64_t ROCKSDB_READ_BUFFER_MB = 1024; // 1 GB
+    const uint64_t ROCKSDB_MAX_OPEN_FILES = 500; // 500 files
+    const uint64_t ROCKSDB_BACKGROUND_THREADS = 10; // 10 DB threads
 
     const uint64_t LEVELDB_WRITE_BUFFER_MB = 64; // 64 MB
     const uint64_t LEVELDB_READ_BUFFER_MB = 64; // 64 MB
@@ -384,8 +394,8 @@ namespace CryptoNote
         {0xc6, 0x1c, 0x4d, 0x6c, 0xcc, 0x12, 0x42, 0x9c, 0x33, 0xd6, 0x35, 0xa5, 0xee, 0xc1, 0x43, 0xd8}};
 
     const char *const SEED_NODES[] = {
-        "138.124.183.11:21688", /// USA
- 	"185.74.222.212:21688", // Hong Kong
+        "138.124.183.11:21688", // USA
+ 	    "185.74.222.212:21688", // Hong Kong
         "seedpro1.zent.cash:21688", // seedpro1.zent.cash
         "seedpro2.zent.cash:21688", // seedpro2.zent.cash
         "seedpro3.zent.cash:21688", // seedpro3.zent.cash

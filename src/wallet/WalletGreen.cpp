@@ -3,6 +3,7 @@
 // Copyright (c) 2018-2019, The TurtleCoin Developers
 // Copyright (c) 2018, The BBSCoin Developers
 // Copyright (c) 2018, The Karbo Developers
+// Copyright (c) 2025, The Zent Cash Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -4738,14 +4739,13 @@ namespace CryptoNote
             const auto tx = getTransaction(input.transactionHash);
 
             /* Input is spent and is old enough to not need storing */
-            const bool oldSpentInput =
-                !unspent && tx.transaction.blockHeight + Constants::PRUNE_SPENT_INPUTS_INTERVAL < height;
+            const bool oldSpentInput = false;
 
             WalletTypes::TransactionInput newInput;
 
             /* Don't generate key image for inputs that will be discarded by
            WalletBackend */
-            if (!isViewWallet && !oldSpentInput)
+            if (!isViewWallet)
             {
                 newInput.keyImage = getKeyImage(
                     input.transactionPublicKey,
