@@ -467,23 +467,24 @@ void SubWallet::convertSyncTimestampToHeight(const uint64_t timestamp, const uin
     }
 }
 
-void SubWallet::pruneSpentInputs(const uint64_t pruneHeight)
+uint64_t SubWallet::pruneSpentInputs(const uint64_t pruneHeight, const bool dryRun)
 {
-    const uint64_t lenBeforePrune = m_spentInputs.size();
-    const auto it = std::remove_if(m_spentInputs.begin(), m_spentInputs.end(), [&pruneHeight](const auto input) {
-        return input.spendHeight <= pruneHeight;
-    });
-    if (it != m_spentInputs.end())
+    const auto isPrunable = [pruneHeight](const auto &input) { return input.spendHeight <= pruneHeight; };
+
+    if (dryRun)
     {
-        m_spentInputs.erase(it, m_spentInputs.end());
+        return std::count_if(m_spentInputs.begin(), m_spentInputs.end(), isPrunable);
     }
-    const uint64_t lenAfterPrune = m_spentInputs.size();
-    const uint64_t difference = lenBeforePrune - lenAfterPrune;
+
+    const uint64_t lenBeforePrune = m_spentInputs.size();
+    m_spentInputs.erase(std::remove_if(m_spentInputs.begin(), m_spentInputs.end(), isPrunable), m_spentInputs.end());
+    const uint64_t difference = lenBeforePrune - m_spentInputs.size();
     if (difference != 0)
     {
         Logger::logger.log(
             "Pruned " + std::to_string(difference) + " spent inputs from " + m_address, Logger::DEBUG, {Logger::SYNC});
     }
+    return difference;
 }
 
 std::vector<Crypto::KeyImage> SubWallet::getKeyImages() const

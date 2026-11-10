@@ -264,6 +264,85 @@ void status(const std::shared_ptr<WalletBackend> walletBackend)
     printSyncSummary(status.localDaemonBlockCount, status.networkBlockCount, status.walletBlockCount);
 }
 
+void prune(const std::shared_ptr<WalletBackend> walletBackend)
+{
+    const auto [walletHeight, localDaemonHeight, networkHeight] = walletBackend->getSyncStatus();
+
+    std::cout << InformationMsg("\nThis permanently removes, up to and including the height you choose:\n")
+              << " - spent inputs (not needed for your balance)\n"
+              << " - your transaction history (list_transfers, save_csv)\n"
+              << InformationMsg("Your balance and unspent funds are NOT affected.\n")
+              << "Wallet scanned height: " << SuccessMsg(walletHeight) << "\n\n";
+
+    uint64_t pruneHeight = 0;
+
+    while (true)
+    {
+        std::cout << InformationMsg("Prune up to which block height? (Hit enter to cancel): ");
+
+        std::string input;
+        std::getline(std::cin, input);
+        Utilities::removeCharFromString(input, ',');
+        Utilities::trim(input);
+
+        if (input == "")
+        {
+            return;
+        }
+
+        try
+        {
+            pruneHeight = std::stoull(input);
+            break;
+        }
+        catch (const std::out_of_range &)
+        {
+            std::cout << WarningMsg("Input is too large or too small!") << std::endl;
+        }
+        catch (const std::invalid_argument &)
+        {
+            std::cout << WarningMsg("Failed to parse height - input is not a number!") << std::endl;
+        }
+    }
+
+    const auto [previewError, preview] = walletBackend->prune(pruneHeight, true);
+
+    if (previewError)
+    {
+        std::cout << WarningMsg(previewError) << std::endl;
+        return;
+    }
+
+    if (preview.spentInputsRemoved == 0 && preview.transactionsRemoved == 0)
+    {
+        std::cout << InformationMsg("Nothing to prune up to that height.") << std::endl;
+        return;
+    }
+
+    std::cout << "\nThis would remove " << WarningMsg(preview.spentInputsRemoved) << " spent inputs and "
+              << WarningMsg(preview.transactionsRemoved) << " transactions.\n"
+              << WarningMsg("This cannot be undone. ") << "A copy of your wallet file will be saved as "
+              << InformationMsg(walletBackend->getWalletLocation() + ".prepune") << "\n\n";
+
+    if (!Utilities::confirm("Are you sure?"))
+    {
+        return;
+    }
+
+    std::cout << InformationMsg("Pruning wallet...") << std::endl;
+
+    const auto [error, result] = walletBackend->prune(pruneHeight, false);
+
+    if (error)
+    {
+        std::cout << WarningMsg("Prune failed: ") << WarningMsg(error) << std::endl;
+        return;
+    }
+
+    std::cout << SuccessMsg("Pruned ") << SuccessMsg(result.spentInputsRemoved) << SuccessMsg(" spent inputs and ")
+              << SuccessMsg(result.transactionsRemoved) << SuccessMsg(" transactions.") << std::endl;
+}
+
 void reset(const std::shared_ptr<WalletBackend> walletBackend)
 {
     const uint64_t scanHeight = ZedUtilities::getScanHeight();

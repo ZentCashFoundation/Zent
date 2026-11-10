@@ -12,6 +12,8 @@ void printPrivateKeys(const std::shared_ptr<WalletBackend> walletBackend);
 
 void reset(const std::shared_ptr<WalletBackend> walletBackend);
 
+void prune(const std::shared_ptr<WalletBackend> walletBackend);
+
 void status(const std::shared_ptr<WalletBackend> walletBackend);
 
 void printHeights(

@@ -237,6 +237,9 @@ enum ErrorCode
     /* The amount given does not have only a single significant digit - i.e.,
      * it cannot be used directly as a transaction input/output amount */
     AMOUNT_UGLY = 59,
+
+    /* The prune height is zero, or too close to the wallet's sync height */
+    PRUNE_HEIGHT_INVALID = 60,
 };
 
 class Error

@@ -976,6 +976,50 @@ void WalletBackend::reset(uint64_t scanHeight, uint64_t timestamp)
     });
 }
 
+std::tuple<Error, PruneResult> WalletBackend::prune(const uint64_t pruneHeight, const bool dryRun)
+{
+    if (isViewWallet())
+    {
+        return {ILLEGAL_VIEW_WALLET_OPERATION, PruneResult()};
+    }
+
+    const auto [walletHeight, localDaemonHeight, networkHeight] = getSyncStatus();
+
+    const uint64_t maxHeight =
+        walletHeight > Constants::PRUNE_SAFETY_MARGIN ? walletHeight - Constants::PRUNE_SAFETY_MARGIN : 0;
+
+    if (pruneHeight == 0 || pruneHeight > maxHeight)
+    {
+        const std::string msg = maxHeight == 0
+            ? "The wallet has not synced far enough to be pruned yet."
+            : "Prune height must be between 1 and " + std::to_string(maxHeight) + " (wallet height "
+                  + std::to_string(walletHeight) + " minus a safety margin of "
+                  + std::to_string(Constants::PRUNE_SAFETY_MARGIN) + " blocks).";
+
+        return {Error(PRUNE_HEIGHT_INVALID, msg), PruneResult()};
+    }
+
+    if (dryRun)
+    {
+        return {SUCCESS, m_subWallets->prune(pruneHeight, true)};
+    }
+
+    return m_syncRAIIWrapper->pauseSynchronizerToRunFunction([this, pruneHeight]() -> std::tuple<Error, PruneResult> {
+        /* Keep a copy of the wallet file as it is on disk before pruning */
+        std::error_code ec;
+        fs::copy_file(m_filename, m_filename + ".prepune", fs::copy_options::overwrite_existing, ec);
+
+        if (ec)
+        {
+            return {Error(UNKNOWN_ERROR, "Could not create pre-prune backup: " + ec.message()), PruneResult()};
+        }
+
+        const PruneResult result = m_subWallets->prune(pruneHeight);
+
+        return {unsafeSave(), result};
+    });
+}
+
 std::tuple<Error, std::string, Crypto::SecretKey, uint64_t> WalletBackend::addSubWallet()
 {
     return m_syncRAIIWrapper->pauseSynchronizerToRunFunction([this]() {

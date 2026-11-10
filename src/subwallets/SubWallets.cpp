@@ -1011,12 +1011,45 @@ std::vector<std::tuple<std::string, uint64_t, uint64_t>> SubWallets::getBalances
     return balances;
 }
 
-void SubWallets::pruneSpentInputs(const uint64_t pruneHeight)
+uint64_t SubWallets::pruneSpentInputs(const uint64_t pruneHeight)
 {
+    std::scoped_lock lock(m_mutex);
+
+    uint64_t removed = 0;
+
     for (auto &[pubKey, subWallet] : m_subWallets)
     {
-        subWallet.pruneSpentInputs(pruneHeight);
+        removed += subWallet.pruneSpentInputs(pruneHeight);
     }
+
+    return removed;
+}
+
+PruneResult SubWallets::prune(const uint64_t pruneHeight, const bool dryRun)
+{
+    std::scoped_lock lock(m_mutex);
+
+    PruneResult result;
+
+    for (auto &[pubKey, subWallet] : m_subWallets)
+    {
+        result.spentInputsRemoved += subWallet.pruneSpentInputs(pruneHeight, dryRun);
+    }
+
+    const auto isPrunable = [pruneHeight](const auto &tx) { return tx.blockHeight <= pruneHeight; };
+
+    if (dryRun)
+    {
+        result.transactionsRemoved = std::count_if(m_transactions.begin(), m_transactions.end(), isPrunable);
+    }
+    else
+    {
+        const auto it = std::remove_if(m_transactions.begin(), m_transactions.end(), isPrunable);
+        result.transactionsRemoved = std::distance(it, m_transactions.end());
+        m_transactions.erase(it, m_transactions.end());
+    }
+
+    return result;
 }
 
 void SubWallets::fromJSON(const JSONObject &j)

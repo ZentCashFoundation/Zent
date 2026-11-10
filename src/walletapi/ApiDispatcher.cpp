@@ -160,6 +160,9 @@ ApiDispatcher::ApiDispatcher(
         /* Reset the wallet from zero, or given scan height */
         .Put("/reset", router(&ApiDispatcher::resetWallet, WalletMustBeOpen, viewWalletsAllowed))
 
+        /* Prune spent inputs + transactions up to the given height */
+        .Put("/prune", router(&ApiDispatcher::pruneWallet, WalletMustBeOpen, viewWalletsBanned))
+
         /* Swap node details */
         .Put("/node", router(&ApiDispatcher::setNodeInfo, WalletMustBeOpen, viewWalletsAllowed))
 
@@ -1061,6 +1064,35 @@ std::tuple<Error, uint16_t> ApiDispatcher::resetWallet(const httplib::Request &r
     }
 
     m_walletBackend->reset(scanHeight, timestamp);
+
+    return {SUCCESS, 200};
+}
+
+std::tuple<Error, uint16_t> ApiDispatcher::pruneWallet(const httplib::Request &req, httplib::Response &res, const nlohmann::json &body)
+{
+    std::scoped_lock lock(m_mutex);
+
+    const uint64_t height = getJsonValue<uint64_t>(body, "height");
+
+    bool dryRun = false;
+
+    if (body.find("dryRun") != body.end())
+    {
+        dryRun = getJsonValue<bool>(body, "dryRun");
+    }
+
+    const auto [error, result] = m_walletBackend->prune(height, dryRun);
+
+    if (error)
+    {
+        return {error, 400};
+    }
+
+    nlohmann::json j {{"spentInputsRemoved", result.spentInputsRemoved},
+                      {"transactionsRemoved", result.transactionsRemoved},
+                      {"dryRun", dryRun}};
+
+    res.set_content(j.dump(4) + "\n", "application/json");
 
     return {SUCCESS, 200};
 }

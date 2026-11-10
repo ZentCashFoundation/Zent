@@ -95,7 +95,9 @@ class SubWallet
 
     void convertSyncTimestampToHeight(const uint64_t timestamp, const uint64_t height);
 
-    void pruneSpentInputs(const uint64_t pruneHeight);
+    /* Returns the number of spent inputs removed (or that would be removed,
+       if dryRun) */
+    uint64_t pruneSpentInputs(const uint64_t pruneHeight, const bool dryRun = false);
 
     std::vector<Crypto::KeyImage> getKeyImages() const;
 

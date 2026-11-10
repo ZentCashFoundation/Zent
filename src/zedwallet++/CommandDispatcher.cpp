@@ -121,6 +121,10 @@ bool handleCommand(
 
         listTransfers(printIncoming, printOutgoing, walletBackend);
     }
+    else if (command == "prune")
+    {
+        prune(walletBackend);
+    }
     else if (command == "reset")
     {
         reset(walletBackend);

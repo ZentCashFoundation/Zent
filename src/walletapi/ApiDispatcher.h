@@ -198,6 +198,10 @@ class ApiDispatcher
     std::tuple<Error, uint16_t>
         resetWallet(const httplib::Request &req, httplib::Response &res, const nlohmann::json &body);
 
+    /* Prunes spent inputs and old transactions up to the given height */
+    std::tuple<Error, uint16_t>
+        pruneWallet(const httplib::Request &req, httplib::Response &res, const nlohmann::json &body);
+
     /* Sets the daemon node and port */
     std::tuple<Error, uint16_t>
         setNodeInfo(const httplib::Request &req, httplib::Response &res, const nlohmann::json &body);

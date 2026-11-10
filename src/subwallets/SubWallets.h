@@ -7,6 +7,12 @@
 #include <crypto/crypto.h>
 #include <subwallets/SubWallet.h>
 
+struct PruneResult
+{
+    uint64_t spentInputsRemoved = 0;
+    uint64_t transactionsRemoved = 0;
+};
+
 class SubWallets
 {
   public:
@@ -170,7 +176,12 @@ class SubWallets
 
     std::vector<std::tuple<std::string, uint64_t, uint64_t>> getBalances(const uint64_t currentHeight) const;
 
-    void pruneSpentInputs(const uint64_t pruneHeight);
+    uint64_t pruneSpentInputs(const uint64_t pruneHeight);
+
+    /* Removes spent inputs and confirmed transactions at or below pruneHeight.
+       Unspent/locked inputs and unconfirmed transactions are never touched.
+       With dryRun, only counts. */
+    PruneResult prune(const uint64_t pruneHeight, const bool dryRun = false);
 
     /////////////////////////////
     /* Public member variables */

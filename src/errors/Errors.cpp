@@ -321,6 +321,12 @@ std::string Error::getErrorMessage() const
             return "The amount given does not have only a single significant digit. "
                    "For example, 20000 or 100000 would be fine, but 20001 or 123456 would not.";
         }
+        case PRUNE_HEIGHT_INVALID:
+        {
+            return "The prune height given is invalid. It must be greater than zero, and "
+                   "far enough below the wallet's sync height that chain reorganizations "
+                   "can still be handled correctly.";
+        }
         /* No default case so the compiler warns us if we missed one */
     }
 

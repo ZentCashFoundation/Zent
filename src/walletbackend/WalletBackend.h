@@ -196,6 +196,10 @@ class WalletBackend
     /* Scan the blockchain, starting from scanHeight / timestamp */
     void reset(uint64_t scanHeight, uint64_t timestamp);
 
+    /* Remove spent inputs and confirmed transactions at or below pruneHeight,
+       then save. Not supported on view wallets. If dryRun, only counts. */
+    std::tuple<Error, PruneResult> prune(const uint64_t pruneHeight, const bool dryRun = false);
+
     /* Is the wallet a view only wallet */
     bool isViewWallet() const;
 
