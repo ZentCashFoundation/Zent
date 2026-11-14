@@ -1,4 +1,5 @@
 # We need 3.8 for set(CMAKE_CXX_STANDARD 17)
+
 cmake_minimum_required(VERSION 3.8)
 
 find_program(CCACHE_PROGRAM ccache)
@@ -136,7 +137,10 @@ include_directories(include "${CMAKE_CURRENT_BINARY_DIR}/version" src external)
 ## Platform specific code base information is applied here
 if (MSVC)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/platform/windows)
-    add_definitions("/bigobj /MP /W3 /GS- /D_CRT_SECURE_NO_WARNINGS /wd4996 /wd4345 /D_WIN32_WINNT=0x0600 /DWIN32_LEAN_AND_MEAN /DGTEST_HAS_TR1_TUPLE=0 /D_VARIADIC_MAX=8 /D__SSE4_1__")
+    set(MSVC_FLAGS "/bigobj /MP /W3 /GS- /wd4996 /wd4345 /wd4244 /wd4267 /wd4101 /wd4242 /wd4834 /wd4018 /wd4005 /wd4722 /wd4146")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MSVC_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSVC_FLAGS}")
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4242 -D_WIN32_WINNT=0x0A00 -DWIN32_LEAN_AND_MEAN -DGTEST_HAS_TR1_TUPLE=0 -D_VARIADIC_MAX=8 -D__SSE4_1__ -DA2_VISCTL)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10485760")
     foreach (VAR CMAKE_C_FLAGS_DEBUG CMAKE_CXX_FLAGS_DEBUG CMAKE_C_FLAGS_RELWITHDEBINFO CMAKE_CXX_FLAGS_RELWITHDEBINFO CMAKE_C_FLAGS_RELEASE CMAKE_CXX_FLAGS_RELEASE)
         string(REPLACE "/MD" "/MT" ${VAR} "${${VAR}}")

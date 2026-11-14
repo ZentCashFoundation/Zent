@@ -23,7 +23,7 @@ namespace Random
     {
         for (size_t i = 0; i < n; i++)
         {
-            result[i] = distribution(gen);
+            result[i] = static_cast<uint8_t>(distribution(gen));
         }
     }
 
@@ -38,7 +38,7 @@ namespace Random
 
         for (size_t i = 0; i < n; i++)
         {
-            result.push_back(distribution(gen));
+            result.push_back(static_cast<uint8_t>(distribution(gen)));
         }
 
         return result;
