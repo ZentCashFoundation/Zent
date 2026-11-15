@@ -1,6 +1,6 @@
 # We need 3.8 for set(CMAKE_CXX_STANDARD 17)
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 
 find_program(CCACHE_PROGRAM ccache)
 if (CCACHE_PROGRAM)
@@ -246,6 +246,9 @@ if (NOT MSVC)
 endif ()
 
 ## Go get us some static BOOST libraries
+if (POLICY CMP0167)
+    cmake_policy(SET CMP0167 OLD)
+endif ()
 set(Boost_NO_BOOST_CMAKE ON)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
