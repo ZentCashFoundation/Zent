@@ -246,10 +246,10 @@ typedef signed short sword16;
 typedef signed int sword32;
 
 #if defined(_MSC_VER) || defined(__BORLANDC__)
-	typedef signed long long sword64;
-	typedef unsigned long long word64;
-	#define SW64LIT(x) x##LL
-	#define W64LIT(x) x##ULL
+	typedef signed __int64 sword64;
+	typedef unsigned __int64 word64;
+	#define SW64LIT(x) x##i64
+	#define W64LIT(x) x##ui64
 #elif (_LP64 || __LP64__)
 	typedef signed long sword64;
 	typedef unsigned long word64;
@@ -733,7 +733,9 @@ NAMESPACE_END
 // Limit the <arm_acle.h> include.
 #if !defined(CRYPTOPP_ARM_ACLE_AVAILABLE)
 # if defined(__aarch32__) || defined(__aarch64__) || (__ARM_ARCH >= 8) || defined(__ARM_ACLE)
-#  if !defined(__ANDROID__) && !defined(ANDROID) && !defined(__APPLE__)
+#  if !defined(__ANDROID__) && !defined(ANDROID)
+/* Apple Clang on arm64 (Xcode 10+) fully supports arm_acle.h and all CRC/crypto
+   intrinsics. The __APPLE__ exclusion was only needed for Xcode < 7 (no PMULL). */
 #   define CRYPTOPP_ARM_ACLE_AVAILABLE 1
 #  endif
 # endif

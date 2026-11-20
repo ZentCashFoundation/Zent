@@ -35,7 +35,7 @@ endif()
 # Print useful information
 message( STATUS "CMake version ${CMAKE_VERSION}" )
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5...4.99)
 if (${CMAKE_VERSION} VERSION_LESS "3.0.0")
   project(cryptopp)
   set(cryptopp_VERSION_MAJOR 8)
@@ -303,7 +303,7 @@ DumpMachine(CRYPTOPP_MINGW32 "\\<mingw32\\>")
 DumpMachine(CRYPTOPP_MINGW64 "w64-mingw32|mingw64")
 DumpMachine(CRYPTOPP_X32 "x32")
 DumpMachine(CRYPTOPP_AARCH32 "Aarch32")
-DumpMachine(CRYPTOPP_AARCH64 "Aarch64")
+DumpMachine(CRYPTOPP_AARCH64 "Aarch64|arm64")
 DumpMachine(CRYPTOPP_ARMHF "armhf|arm7l|eabihf")
 DumpMachine(CRYPTOPP_ARM "\\<arm\\>")
 
@@ -453,7 +453,7 @@ if (MSVC)
   if (CMAKE_SYSTEM_VERSION MATCHES "10\\.0.*")
     list(APPEND CRYPTOPP_COMPILE_DEFINITIONS "_WIN32_WINNT=0x0A00")
   endif ()
-  list(APPEND CRYPTOPP_COMPILE_OPTIONS "$<$<COMPILE_LANGUAGE:CXX>:/FI\"winapifamily.h\">")
+  list(APPEND CRYPTOPP_COMPILE_OPTIONS "/FI\"winapifamily.h\"")
 endif ()
 
 # Enable PIC for all target machines except 32-bit i386 due to register pressures.

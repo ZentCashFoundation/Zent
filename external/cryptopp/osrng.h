@@ -46,7 +46,7 @@ public:
 # if defined(__CYGWIN__) && defined(__x86_64__)
 	typedef unsigned long long ProviderHandle;
 # elif defined(WIN64) || defined(_WIN64)
-	typedef unsigned long long ProviderHandle;
+	typedef unsigned __int64 ProviderHandle;
 # else
 	typedef unsigned long ProviderHandle;
 # endif

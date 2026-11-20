@@ -1,4 +1,4 @@
-name: Build Release
+name: Build Code
 on:
   push:
   pull_request:
@@ -221,7 +221,78 @@ jobs:
           name: ZentCash-${{ github.sha }}-${{ env.LABEL }}
           path: ./build/src/ZentCash-${{ github.sha }} 
 
-          
+  macos_build:
+      name: macOS-arm64
+      runs-on: macos-15
+      env:
+        CC: /opt/homebrew/opt/llvm@15/bin/clang
+        CXX: /opt/homebrew/opt/llvm@15/bin/clang++
+        LABEL: osx-arm64
+        CCACHE_DIR: $GITHUB_WORKSPACE/.ccache
+      steps:
+        - uses: actions/checkout@v7
+
+        # Fetch Dependencies
+        - name: Dependencies
+          run: |
+             brew install --force boost llvm@15 ccache
+             brew reinstall llvm@15
+             brew link --overwrite llvm@15
+
+        # Cache C/C++
+        - name: Retrieve ccache
+          uses: actions/cache@v6
+          with:
+            path: .ccache
+            key: ccache-osx
+
+        # Configure project with cmake
+        - name: Configure
+          run: |
+            mkdir build && cd build
+            cmake -DARCH=default -DCMAKE_BUILD_TYPE=Release -DSTATIC=true ..
+        
+        # Build for macOS
+        - name: Build
+          run: |
+            cd build
+            make -j2
+                        
+        # Prepare for deploy
+        - name: Prepare for Deploy
+          id: before_deploy
+          env:
+            COMMIT_SHA: ${{ github.sha }}
+          run: |
+            if [[ "${TAG:5:4}" == "tags" ]]; then export TAG=${TAG:10}; else export TAG=${COMMIT_SHA}; fi
+            cd build/src
+            TARGETS="Zentd miner zentwallet cryptotest Zent-service wallet-api wallet-upgrader"
+            strip ${TARGETS}
+            rm -rf ZentCash-${TAG}
+            mkdir ZentCash-${TAG}
+            cp ${TARGETS} ZentCash-${TAG}/
+            cp ../../LICENSE ZentCash-${TAG}/
+            tar cvfz ZentCash-${TAG}-${LABEL}.tar.gz ZentCash-${TAG}/
+  
+        # Upload to GH Release
+        - name: Upload to GH Release
+          if: github.event_name == 'release'
+          uses: tanyagray/action-upload-release-asset@v1.1.3
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ github.event.release.upload_url }}
+            asset_path: ./build/src/ZentCash-${{ github.event.release.tag_name }}-${{ env.LABEL }}.tar.gz
+            asset_name: ZentCash-${{ github.event.release.tag_name }}-${{ env.LABEL }}.tar.gz
+            asset_content_type: application/gzip
+  
+        # Upload to GH Actions Artifacts
+        - name: Upload To GH Artifacts
+          uses: actions/upload-artifact@v7
+          with:
+            name: ZentCash-${{ github.sha }}-${{ env.LABEL }}
+            path: ./build/src/ZentCash-${{ github.sha }}            
+
 
   macos_intel_build:
     name: macOS-intel

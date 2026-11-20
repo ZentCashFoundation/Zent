@@ -129,7 +129,26 @@ add_library(__filesystem INTERFACE)
 
 # Windows works out of the box
 if (APPLE)
-    target_link_libraries(__filesystem INTERFACE /usr/local/opt/llvm/lib/c++/libc++abi.a)
+    get_filename_component(CXX_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    get_filename_component(LLVM_PREFIX "${CXX_COMPILER_DIR}/.." ABSOLUTE)
+    set(LIBCXXABI_CANDIDATES
+        "${LLVM_PREFIX}/lib/c++/libc++abi.a"
+        /opt/homebrew/opt/llvm@15/lib/c++/libc++abi.a
+        /opt/homebrew/opt/llvm/lib/c++/libc++abi.a
+        /usr/local/opt/llvm@15/lib/c++/libc++abi.a
+        /usr/local/opt/llvm/lib/c++/libc++abi.a)
+    foreach (candidate ${LIBCXXABI_CANDIDATES})
+        if (EXISTS "${candidate}")
+            set(LIBCXXABI_PATH "${candidate}")
+            break ()
+        endif ()
+    endforeach ()
+    if (LIBCXXABI_PATH)
+        message(STATUS "Using libc++abi: ${LIBCXXABI_PATH}")
+        target_link_libraries(__filesystem INTERFACE ${LIBCXXABI_PATH})
+    else ()
+        message(WARNING "libc++abi.a not found; std::filesystem may fail to link")
+    endif ()
 elseif (UNIX)
     target_link_libraries(__filesystem INTERFACE stdc++fs)
 endif ()
